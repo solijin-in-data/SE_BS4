@@ -1,4 +1,4 @@
-SE_BS4 1.7 - Web Scraping Data 
+SE_BS4 0.2 - Web Scraping Data 
 
 **Project status**
 *Đang trong quá trình phát triển*
