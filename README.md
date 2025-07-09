@@ -1,4 +1,4 @@
-SE_BS4 0.2 - Web Scraping Data 
+SE_BS4 0.2.1 - Web Scraping Data 
 
 **Project status**
 *Đang trong quá trình phát triển*
@@ -12,8 +12,7 @@ Thu thập dữ liệu kinh tế, tài chính từ các trang web như TradingEc
 - BeautifulSoup
 
 **Hướng dẫn sử dụng**
-- Thêm url chính xác của trang web cần lấy dữ liệu vào dòng "url = ..."
-- chạy cmd : python SE_BS4 1.x
+- chạy cmd : python SE_BS4 0.2x
 
 **Tác giả**
 solijin-in-data
