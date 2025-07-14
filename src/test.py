@@ -12,6 +12,7 @@ from fake_useragent import UserAgent
 import subprocess
 import traceback
 from proxi import get_https_proxy
+import json
 
 # Print versions for debugging
 print("Selenium version:", webdriver.__version__)
@@ -20,7 +21,7 @@ result = subprocess.run([chrome_driver_path, "--version"], capture_output=True, 
 print("ChromeDriver version:", result.stdout.strip())
 
 # User request
-print("WELCOME - SE_BS4\nPlease choose one of these option\n[1] Get GDP data up to date\n[2] Get Net trading value of Foreign investors & Pop trading by stock ticker this week\n[3] Get Weekly price changes by sector")
+print("WELCOME - SE_BS4\nPlease choose one of these option\n[1] Get Net trading value of Foreign investors & Pop trading by stock ticker this week\n[2] Get GDP data up to date\n[3] Get Weekly price changes by sector")
 user_rq = input("Pls enter a number")
 
 # Selenium optimization
@@ -62,6 +63,36 @@ driver.execute_cdp_cmd(
 try:
     if int(user_rq) == 1:
         url = "https://finance.vietstock.vn/"
+        driver.get(url)
+        WebDriverWait(driver, 20).until(EC.presence_of_all_elements_located((By.TAG_NAME, "body")))
+        time.sleep(10)
+        
+        # Kiểm tra bot detection
+        html = driver.page_source
+        Prob = ["access denied", "403 forbidden", "captcha", "cloudflare"]
+        if any(x in html.lower() for x in Prob):
+            print("Bot detected")
+        else:
+            print("access sucess")
+
+        # Lấy HTML
+        soup = BeautifulSoup(html, 'lxml')
+        with open("vietstock_page.html", "w", encoding="utf-8") as f:
+            f.write(html)
+
+        with open("vietstock_page.html", "r", encoding="utf-8") as f:
+            html = f.read()
+
+        soup = BeautifulSoup(html, 'lxml')
+        spans = soup.find_all("span", class_="highcharts-text-outline")
+
+        values = [span.get_text(strip=True) for span in spans if span.get_text(strip=True).replace('.', '', 1).isdigit()]
+
+        for i, val in enumerate(values[:10]):
+            print(f"{i+1}. {val}")
+
+        for i, val in enumerate(values[:10]):
+            print(f"{i+1}. {val}")
 
     if int(user_rq) == 2:
         url = "https://tradingeconomics.com/vietnam/gdp"
@@ -142,6 +173,10 @@ try:
 
 except Exception as e:
     print("Lỗi trong quá trình cào dữ liệu:", str(e))
+    print(f"Stack trace: {traceback.format_exc()}")
+    with open("error_page.html", "w", encoding="utf-8") as f:
+        f.write(driver.page_source)
+    print("HTML Đã được lưu vào error_page.html để debug")
 
 finally:
     time.sleep(2)  # Giảm từ 3 xuống 2 giây
