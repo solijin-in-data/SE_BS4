@@ -89,4 +89,14 @@
 **⛔ Vấn đề:**
 - Load website bị ảnh hưởng bởi kết nối internet 
 
+## 🛠 Version 0.2.2
+
+## Tối ưu:
+- Thay đổi logic truy cập web vietstock
+
+**✅ Kết quả:**
+
+**⛔ Vấn đề:**
+- Proxy ảo được sử dụng gây chậm kết nối đến website
+
 ---
